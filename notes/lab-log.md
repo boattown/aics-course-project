@@ -10,6 +10,10 @@ Reading paper Zhu Y., Fathi A., Fei-Fei L. (2014) Reasoning about Object Afforda
 
 ### 14 dec
 
-Setting up the GitHub repository. Writing and submitting project description.
+Setting up the GitHub repository. Writing project description.
 
 Reading paper Ilharco, Gabriel & Zellers, Rowan & Farhadi, Ali & Hajishirzi, Hannaneh. (2020). Probing Text Models for Common Ground with Visual Representations. 
+
+### 15 dec
+
+Writing and submitting project description.

@@ -17,3 +17,8 @@ Reading paper *Ilharco, Gabriel & Zellers, Rowan & Farhadi, Ali & Hajishirzi, Ha
 ### 15 dec
 
 Writing and submitting project description.
+
+### 20 dec 
+
+Discussing the project idea and implementation with Nikolai. Will start with a mapping of embeddings of object and affordance, without images.
+Starting the data preparation.

@@ -1,4 +1,5 @@
-# aics-course-project
+# Encoded object affordances in uni- and multi-modal language models
+aics-course-project
 
 ### Folders
 

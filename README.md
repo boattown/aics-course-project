@@ -3,6 +3,8 @@ aics-course-project
 
 ### Folders
 
+Lab log can be found in /notes.
+
 Object labels and affordance annotations from (Zhu et al, 2014) can be found in /data.
 
 Code for data preparation can be found in /code.

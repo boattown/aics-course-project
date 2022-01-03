@@ -27,6 +27,21 @@ Starting the data preparation.
 
 Continue preparing the data. 
 
-Notes to myself: Consider splitting the data into train/val/test considering the affordances of the objects instead of randomly, so that e.g. pen, telescope and laptop are in the train set and pencil, microscope and desktop computer in the test set.
+Notes: Consider splitting the data into train/val/test considering the affordances of the objects instead of randomly, so that e.g. pen, telescope and laptop are in the train set and pencil, microscope and desktop computer in the test set.
 
 Also consider adding multiple images of each object. This way, the model can train on mapping object with its affordances multiple times instead of seeing the same word embedding each time.
+
+### 3 jan
+
+Extracting embeddings of objects and affordances from BERT and VisualBERT and creating dictionaries to map words with their embeddings.
+
+Notes: Extracting embeddings from Bert's vocabulary does not work for objects/affordances consisting of two words such as "vacuum cleaner". Will need to let Bert encode the objects and affordances instead. I decided to use the penultimate layer of the hidden states (see BERT for feature extraction on https://jalammar.github.io/illustrated-bert/) as a representation of the objects and affordances.
+
+Extracting word embeddings from LXMERT does not seem to be possible since the model requires visual input as well. Because of this, I choose VisualBERT instead.
+
+
+
+
+
+
+

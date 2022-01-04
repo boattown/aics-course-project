@@ -39,6 +39,9 @@ Notes: Extracting embeddings from Bert's vocabulary does not work for objects/af
 
 Extracting word embeddings from LXMERT does not seem to be possible since the model requires visual input as well. Because of this, I choose VisualBERT instead.
 
+### 4 jan
+
+Create a (draft of a) simple model with linear layer and sigmoid to map the multiplied object and affordance vectors with a truth value (1 and 0). The model needs to train for many epochs to learn because of data sparsity and the simple architecture. Maybe this is not a problem since performance of BERT and VisualBERT is the goal rather than a high performance.
 
 
 

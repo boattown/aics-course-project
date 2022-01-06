@@ -49,6 +49,11 @@ Test the probes in terms of accuracy (will add preciosion, recall and F1) on the
 
 Notes: Replace the words with their corresponding embeddings in the train- and test stage. This way, the same dataloaders can be used for the different models to ensure that difference in performance has to do with the representations of the objects and not the split of the data. Despite this change, the accuracy of the probes on the testing data varies a lot from training to training. 
 
+### 6 jan
+
+Calculate per object and per affordance accuracy. Create a baseline score (in total, per object and per affordance).
+
+
 
 
 

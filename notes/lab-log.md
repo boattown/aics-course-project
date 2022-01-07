@@ -51,8 +51,11 @@ Notes: Replace the words with their corresponding embeddings in the train- and t
 
 ### 6 jan
 
-Calculate per object and per affordance accuracy. Create a baseline score (in total, per object and per affordance).
+Calculate per object and per affordance accuracy. Create a baseline score (in total and per object).
 
+### 7 jan
+
+Create baseline scores per affordance.
 
 
 

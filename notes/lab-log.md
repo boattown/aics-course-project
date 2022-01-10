@@ -57,6 +57,10 @@ Calculate per object and per affordance accuracy. Create a baseline score (in to
 
 Create baseline scores per affordance.
 
+### 10 jan
+
+Feedback and discussion with Nikolai.
+
 
 
 

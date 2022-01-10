@@ -45,7 +45,7 @@ Create a (draft of a) simple model with linear layer and sigmoid to map the mult
 
 ### 5 jan
 
-Test the probes in terms of accuracy (will add preciosion, recall and F1) on the test-data.
+Test the probes in terms of accuracy (will add precision, recall and F1) on the test-data.
 
 Notes: Replace the words with their corresponding embeddings in the train- and test stage. This way, the same dataloaders can be used for the different models to ensure that difference in performance has to do with the representations of the objects and not the split of the data. Despite this change, the accuracy of the probes on the testing data varies a lot from training to training. 
 
@@ -59,7 +59,7 @@ Create baseline scores per affordance.
 
 ### 10 jan
 
-Feedback and discussion with Nikolai.
+Feedback and discussion with Nikolai. Add precision, recall and F1.
 
 
 

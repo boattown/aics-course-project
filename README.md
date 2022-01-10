@@ -18,6 +18,6 @@ Code for data preparation can be found in /code.
 - [x] Train a simple model (linear layer and Sigmoid) to map embeddings to a truth value (1/0) for BERT and VisualBERT.
 - [ ] Test the model on seen and unseen objects for BERT and VisualBERT.
 - [ ] Compare the results (in total and per object, in terms of accuracy, precision, recall and F1).
-- [ ] If manageable, replace embeddings of objects with representations of images of the objects.
+- [ ] Train the models 10 times with different data seeds, present the results in a diagram, and take the best checkpoint.
 
 Comments:

@@ -61,6 +61,10 @@ Create baseline scores per affordance.
 
 Feedback and discussion with Nikolai. Add precision, recall and F1.
 
+### 11 jan
+
+Initialize layers with torch.nn.init.uniform_. Add testing on seen+unseen word pairs.
+
 
 
 

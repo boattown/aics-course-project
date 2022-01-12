@@ -65,6 +65,10 @@ Feedback and discussion with Nikolai. Add precision, recall and F1.
 
 Initialize layers with torch.nn.init.uniform_. Add testing on seen+unseen word pairs.
 
+### 12 jan
+
+Save the model with the highest validation accuracy under 2000 epochs. Train 2x10 models with different seed and note accuracy, precision, recall and f1.
+
 
 
 

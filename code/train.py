@@ -23,9 +23,11 @@ df = create_df('./data/affordance_annotations.txt')
 
 unique_objects, unique_affordances, word_to_index, index_to_word = get_lists_and_dicts(df)
 
-train_pairs = get_gold_data(df[:42])
-val_pairs = get_gold_data(df[42:52])
-test_pairs = get_gold_data(df[52:])
+shuffled_df = df.sample(frac=1, random_state=42).reset_index(drop=True)
+
+train_pairs = get_gold_data(shuffled_df[:42])
+val_pairs = get_gold_data(shuffled_df[42:52])
+test_pairs = get_gold_data(shuffled_df[52:])
 
 bert_word_to_embedding = get_bert_embedding_dict([train_pairs + val_pairs + test_pairs])
 visual_bert_word_to_embedding = get_visual_bert_embedding_dict([train_pairs + val_pairs + test_pairs])

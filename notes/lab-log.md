@@ -69,6 +69,8 @@ Initialize layers with torch.nn.init.uniform_. Add testing on seen+unseen word p
 
 Save the model with the highest validation accuracy under 2000 epochs. Train 2x10 models with different seed and note accuracy, precision, recall and f1.
 
+### 14 jan
 
+Split the jupyter notebook into python scripts, cleaning up and commenting the code.
 
 

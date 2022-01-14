@@ -39,8 +39,6 @@ def get_lists_and_dicts(df):
 
     return unique_objects, unique_affordances, word_to_index, index_to_word
 
-
-
 def get_gold_data(df):
     gold_data_pairs = []
     for _, row in df.iterrows():

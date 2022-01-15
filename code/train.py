@@ -4,12 +4,12 @@ from torch.utils.data import DataLoader
 import torch.nn as nn
 import torch.optim as optim
 import numpy as np
+import argparse
 
 from models import Probe
 from dataset import create_df, get_gold_data, get_bert_embedding_dict, get_visual_bert_embedding_dict, get_lists_and_dicts
 
-#device = "cuda:0" if torch.cuda.is_available() else "cpu"
-device = "cpu"
+device = "cuda:1" if torch.cuda.is_available() else "cpu"
 
 models = ['bert', 'visualbert']
 
@@ -33,13 +33,11 @@ bert_word_to_embedding = get_bert_embedding_dict([train_pairs + val_pairs + test
 visual_bert_word_to_embedding = get_visual_bert_embedding_dict([train_pairs + val_pairs + test_pairs])
 
 # The structure in each batch is: 
-# 0 bert object embedding, 
-# 1 bert affordance embedding, 
-# 2 visualbert object embedding, 
-# 3 visualbert affordance embedding, 
-# 4 truth values,
-# 5 object id
-# 6 affordance id
+# 0 object embedding, 
+# 1 affordance embedding, 
+# 2 truth values,
+# 3 object id
+# 4 affordance id
 
 def train(model, criterion, optimizer, train_dataloader, val_dataloader, hyperparameters):
 
@@ -63,9 +61,9 @@ def train(model, criterion, optimizer, train_dataloader, val_dataloader, hyperpa
         
         for _, batch in enumerate(train_dataloader):
             
-            obj = batch[0]
-            affordance = batch[1]
-            truth_value = batch[2]
+            obj = batch[0].to(device)
+            affordance = batch[1].to(device)
+            truth_value = batch[2].to(device)
             
             output = model(obj, affordance)
             loss = criterion(output,truth_value)
@@ -90,21 +88,23 @@ def train(model, criterion, optimizer, train_dataloader, val_dataloader, hyperpa
         
         val_epoch_accuracy = 0
         
-        for _, batch in enumerate(val_dataloader):
-            
-            obj = batch[0]
-            affordance = batch[1]
-            truth_value = batch[2]
-            
-            output = model(obj, affordance)
-            loss = criterion(output,truth_value)
-            validation_loss += loss.item()
-            
-            # calculate validation accuracy
-            prediction = torch.argmax(output, dim=1)
-            correct_predictions = torch.eq(prediction,truth_value).long()
-            batch_accuracy = float(sum(correct_predictions)/len(correct_predictions))
-            val_epoch_accuracy += batch_accuracy
+        with torch.no_grad():
+        
+            for _, batch in enumerate(val_dataloader):
+
+                obj = batch[0].to(device)
+                affordance = batch[1].to(device)
+                truth_value = batch[2].to(device)
+
+                output = model(obj, affordance)
+                loss = criterion(output,truth_value)
+                validation_loss += loss.item()
+
+                # calculate validation accuracy
+                prediction = torch.argmax(output, dim=1)
+                correct_predictions = torch.eq(prediction,truth_value).long()
+                batch_accuracy = float(sum(correct_predictions)/len(correct_predictions))
+                val_epoch_accuracy += batch_accuracy
         
         epoch_list.append(epoch+1)
         training_loss_avg = training_loss/len(train_dataloader)
@@ -129,13 +129,13 @@ def train(model, criterion, optimizer, train_dataloader, val_dataloader, hyperpa
 
     return val_accuracy_list.index(best_accuracy)+1, best_accuracy
 
-def main():
+def main(args):
 
     for model_name in models:
 
         if model_name == 'bert':
             
-            torch.manual_seed(0)
+            torch.manual_seed(args.bert_seed)
 
             bert_probe = Probe().to(device)
 
@@ -150,14 +150,16 @@ def main():
 
             train_dataloader = DataLoader(train_data, batch_size=bert_hyperparameters["batch_size"], shuffle=True)
             val_dataloader = DataLoader(val_data, batch_size=bert_hyperparameters["batch_size"], shuffle=True)
-
+            
+            print()
             print(f'Start training BERT Probe')
             best_epoch, best_accuracy = train(bert_probe, criterion, optimizer, train_dataloader, val_dataloader, bert_hyperparameters)
+            print()
             print(f'BERT Probe saved at epoch {best_epoch} with validation accuracy {np.round(best_accuracy * 100, 2)} %')
 
         elif model_name == 'visualbert':
 
-            torch.manual_seed(6)
+            torch.manual_seed(args.visual_bert_seed)
 
             visual_bert_probe = Probe().to(device)
 
@@ -173,11 +175,18 @@ def main():
             train_dataloader = DataLoader(train_data, batch_size=bert_hyperparameters["batch_size"], shuffle=True)
             val_dataloader = DataLoader(val_data, batch_size=bert_hyperparameters["batch_size"], shuffle=True)
             
+            print()
             print(f'Start training VisualBERT Probe')
             best_epoch, best_accuracy = train(visual_bert_probe, criterion, optimizer, train_dataloader, val_dataloader, visual_bert_hyperparameters)
+            print()
             print(f'VisualBERT Probe saved at epoch {best_epoch} with validation accuracy {np.round(best_accuracy * 100, 2)} %')
     return
 
 if __name__ == '__main__':
     
-    main()
+    parser = argparse.ArgumentParser()
+    parser.add_argument('--bert_seed', type=int, default=1, help='manual seed for training the bert probe')
+    parser.add_argument('--visual_bert_seed', type=int, default=2, help='manual seed for training the visual bert probe')
+    arguments = parser.parse_args()
+    
+    main(arguments)

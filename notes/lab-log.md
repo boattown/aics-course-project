@@ -71,6 +71,10 @@ Save the model with the highest validation accuracy under 2000 epochs. Train 2x1
 
 ### 14 jan
 
-Split the jupyter notebook into python scripts, cleaning up and commenting the code.
+Split the jupyter notebook into python scripts, cleaning up the code. Start test.ipynb.
+
+### 15 jan
+
+Train 2x10 models again with different seed, since the results were different on mltgpu. Continue with test.ipynb.
 
 

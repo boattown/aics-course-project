@@ -77,4 +77,8 @@ Split the jupyter notebook into python scripts, cleaning up the code. Start test
 
 Train 2x10 models again with different seed, since the results were different on mltgpu. Continue with test.ipynb.
 
+### 16 jan 
+
+Display the results in tables in test.ipynb. First, per affordance accuracy compared with baseline. Second, per object accuracy compared with baseline. Third, pairs of seen and unseen objects with identical affordances.
+
 

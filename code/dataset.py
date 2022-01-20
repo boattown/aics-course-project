@@ -3,6 +3,17 @@ import torch
 from transformers import VisualBertModel, BertModel, BertTokenizer
 
 def clean_up_df(object_name):
+    """Removes punctuation from object names
+
+    Removes unnecessary punctuation and replaces underscore with space.
+
+    Args:
+        object_name: String. Applied to each object name in a DataFrame column.
+    
+    Returns:
+        A string without punctuation.
+
+    """
 
     clean_object_name = ''
     for char in object_name:
@@ -16,8 +27,18 @@ def clean_up_df(object_name):
     return clean_object_name
 
 def create_df(file):
+    """Creates a pandas DataFrame with the data.
 
-    #file = '../data/affordance_annotations.txt'
+    Create a pandas DataFrame with the data of the file and applies clean_up_df to the object names.
+
+    Args:
+        file: String. The path of the data file.
+    
+    Returns:
+        A DataFrame with names of objects, affordances and their annotation.
+
+    """
+    
     df = pd.read_csv(file)
     df.rename(columns = {'Unnamed: 0':'Object'}, inplace = True)
     df['Object'] = df['Object'].apply(clean_up_df)
@@ -26,6 +47,20 @@ def create_df(file):
     return df
 
 def get_lists_and_dicts(df):
+    """Creates lists of objects and affordances and dictionaries for mapping them to an id.
+
+    Create a pandas DataFrame with the data of the file and applies clean_up_df to the object names.
+
+    Args:
+        df: Pandas DataFrame.
+    
+    Returns:
+        unique_objects: A list of unique objects.
+        unique_affordances: A list of unique affordances.
+        word_to_index: A dictionary that maps objects and affordances to an id.
+        index_to_word: A dictionary that maps id to objects and affordances.
+    
+    """
 
     unique_objects = list(df['Object'])
     unique_affordances = [affordance.lower() for affordance in df.columns[2:]]
@@ -40,6 +75,18 @@ def get_lists_and_dicts(df):
     return unique_objects, unique_affordances, word_to_index, index_to_word
 
 def get_gold_data(df):
+    """Pairs objects with affordances and their truth value.
+
+    Creates a list of tuples from the data in the DataFrame. Each tuple consists of object, affordance and truthvalue.
+
+    Args:
+        df: Pandas DataFrame.
+    
+    Returns:
+        gold_data_pairs: A list of tuples.
+    
+    """
+    
     gold_data_pairs = []
     for _, row in df.iterrows():
         for i, value in enumerate(row):
@@ -52,16 +99,40 @@ def get_gold_data(df):
 tokenizer = BertTokenizer.from_pretrained('bert-base-uncased')
 
 def tokenize_string(text):
+    """Pairs objects with affordances and their truth value.
+
+    Adds [CLS] and [SEP] tokens to the string and tokenizes it.
+
+    Args:
+        text: String. The word to tokenize.
+    
+    Returns:
+        String. The tokenized string.
+    
+    """
+    
     marked_text = "[CLS] " + text + " [SEP]"
     return tokenizer.tokenize(marked_text)
 
-bert_model = BertModel.from_pretrained('bert-base-uncased',
+def get_bert_embedding_dict(data_pairs):
+    """Creates a dictionary that maps objects and affordances to BERT representations.
+
+    Tokenizes objects and affordances and passes them to BERT. The mean of the penultimate layer 
+    of the hidden state is used to represent the input. The words are mapped to their BERT representation in a dictionary.
+
+    Args:
+        data_pairs: List. The list of tuples with pairs of objects and affordances.
+    
+    Returns:
+        Dictionary. A dictionary that maps objects and affordances to BERT's representations.
+    
+    """
+    
+    bert_model = BertModel.from_pretrained('bert-base-uncased',
                                   output_hidden_states = True
                                   )
 
-def get_bert_embedding_dict(data_pairs):
-
-    bert_word_to_embedding = {} # I create this embeddings dictionary so I can easily map words to embeddings
+    bert_word_to_embedding = {}
 
     with torch.no_grad():
         
@@ -99,9 +170,23 @@ def get_bert_embedding_dict(data_pairs):
 
     return bert_word_to_embedding
 
-visual_bert_model = VisualBertModel.from_pretrained("uclanlp/visualbert-vqa-coco-pre",output_hidden_states=True)
+
 
 def get_visual_bert_embedding_dict(data_pairs):
+    """Creates a dictionary that maps objects and affordances to VisualBERT representations.
+
+    Tokenizes objects and affordances and passes them to VisualBERT. The mean of the penultimate layer 
+    of the hidden state is used to represent the input. The words are mapped to their VisualBERT representation in a dictionary.
+
+    Args:
+        data_pairs: List. The list of tuples with pairs of objects and affordances.
+    
+    Returns:
+        Dictionary. A dictionary that maps objects and affordances to VisualBERT's representations.
+    
+    """
+    
+    visual_bert_model = VisualBertModel.from_pretrained("uclanlp/visualbert-vqa-coco-pre",output_hidden_states=True)
 
     visual_bert_word_to_embedding = {} # I create this embeddings dictionary so I can easily map words to embeddings
 

@@ -81,4 +81,14 @@ Train 2x10 models again with different seed, since the results were different on
 
 Display the results in tables in test.ipynb. First, per affordance accuracy compared with baseline. Second, per object accuracy compared with baseline. Third, pairs of seen and unseen objects with identical affordances.
 
+### 17 jan
 
+Start writing the project report.
+
+### 19 jan
+
+Continue writing the project report.
+
+### 20 jan
+
+Finish the project report. Comment the code.

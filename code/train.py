@@ -32,14 +32,26 @@ test_pairs = get_gold_data(shuffled_df[52:])
 bert_word_to_embedding = get_bert_embedding_dict([train_pairs + val_pairs + test_pairs])
 visual_bert_word_to_embedding = get_visual_bert_embedding_dict([train_pairs + val_pairs + test_pairs])
 
-# The structure in each batch is: 
-# 0 object embedding, 
-# 1 affordance embedding, 
-# 2 truth values,
-# 3 object id
-# 4 affordance id
-
 def train(model, criterion, optimizer, train_dataloader, val_dataloader, hyperparameters):
+    """Trains and validates the probe model
+
+    Trains the probe model to map the product of object and affordance representations to truth values.
+    Validates on development set after each epoch.
+    The model with the highest validation accuracy is saved.
+
+    Args:
+    model: Probe (bert_probe or visual_bert_probe)
+    criterion: loss function (nn.NLLLoss())
+    optimizer: optimizer (optim.Adam())
+    train_dataloader: data iterator of the train set
+    val_dataloader: data iterator of the validation set
+    hyperparameters: hyperparameters (bert_hyperparameters or visual_bert_hyperparameters)
+    
+    Returns:
+    best_epoch: The epoch where the best model was saved.
+    best_accuracy: The validation accuracy of the saved model.
+
+    """
 
     torch.nn.init.uniform_(model.fc1.weight, a=0, b=1)
 
@@ -130,6 +142,18 @@ def train(model, criterion, optimizer, train_dataloader, val_dataloader, hyperpa
     return val_accuracy_list.index(best_accuracy)+1, best_accuracy
 
 def main(args):
+    """Main function.
+
+    Creates train and validation dataloaders for BERT and VisualBERT with manual seed.
+    Calls train function to train and validate the probes for BERT and VisualBERT.
+    Prints training and validation loss and accuracy and the epoch and validation accuracy of the saved model.
+
+    Args:
+        args: args.bert_seed and args.visual_bert_seed that default to 1 and 2.
+    
+    Returns:
+        None.
+    """
 
     for model_name in models:
 
@@ -150,6 +174,13 @@ def main(args):
 
             train_dataloader = DataLoader(train_data, batch_size=bert_hyperparameters["batch_size"], shuffle=True)
             val_dataloader = DataLoader(val_data, batch_size=bert_hyperparameters["batch_size"], shuffle=True)
+            
+            # The structure of each batch is: 
+            # 0 object embedding, 
+            # 1 affordance embedding, 
+            # 2 truth values,
+            # 3 object id
+            # 4 affordance id
             
             print()
             print(f'Start training BERT Probe')
@@ -174,6 +205,13 @@ def main(args):
 
             train_dataloader = DataLoader(train_data, batch_size=bert_hyperparameters["batch_size"], shuffle=True)
             val_dataloader = DataLoader(val_data, batch_size=bert_hyperparameters["batch_size"], shuffle=True)
+            
+            # The structure of each batch is: 
+            # 0 object embedding, 
+            # 1 affordance embedding, 
+            # 2 truth values,
+            # 3 object id
+            # 4 affordance id
             
             print()
             print(f'Start training VisualBERT Probe')
